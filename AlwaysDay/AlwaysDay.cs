@@ -58,7 +58,7 @@ namespace AlwaysDay
 
             Hook.GameUpdate.Register(this, OnUpdate);
 
-            Commands.ChatCommands.Add(new Command("TShockAPI.Permissions.alwaysdaytoggle", AlwaysDay1, "always-day"));
+            Commands.ChatCommands.Add(new Command("alwaysdaytoggle", AlwaysDay1, "always-day"));
             
         }
 #endregion
