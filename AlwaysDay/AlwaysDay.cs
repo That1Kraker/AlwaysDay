@@ -18,8 +18,6 @@ namespace AlwaysDay
 
 
         private bool AlwaysDayToggle = false;
-        private DateTime LastCheck = DateTime.UtcNow;
-        private DateTime OtherLastCheck = DateTime.UtcNow;
         
         
         
@@ -27,7 +25,7 @@ namespace AlwaysDay
         
         public override Version Version
         {
-            get { return new Version("1.0.0.0"); }
+            get { return new Version("1.0.0.1"); }
         }
 
         public override string Name
@@ -48,17 +46,16 @@ namespace AlwaysDay
         public AlwaysDay(Main game)
             : base(game)
         {
-            Order = -4;
+            Order = 0;
         }
 
         #region Initialize
         public override void Initialize()
         {
-            var Hook = ServerApi.Hooks;
 
-            Hook.GameUpdate.Register(this, OnUpdate);
+            ServerApi.Hooks.GameUpdate.Register(this, OnUpdate);
 
-            Commands.ChatCommands.Add(new Command("alwaysdaytoggle", AlwaysDay1, "always-day"));
+            Commands.ChatCommands.Add(new Command("alwaysdaytoggle", AlDay, "always-day"));
             
         }
 #endregion
@@ -68,9 +65,7 @@ namespace AlwaysDay
         {
             if (disposing)
             {
-                var Hook = ServerApi.Hooks;
-
-                Hook.GameUpdate.Deregister(this, OnUpdate);
+                ServerApi.Hooks.GameUpdate.Deregister(this, OnUpdate);
             }
             base.Dispose(disposing);
         }
@@ -79,7 +74,7 @@ namespace AlwaysDay
          #region OnUpdate
          public void OnUpdate(EventArgs args)
                 {
-                    if (AlwaysDayToggle == true)
+                    if (AlwaysDayToggle)
                     {
                         TSPlayer.Server.SetTime(true, 27000.0);
                     }
@@ -88,16 +83,11 @@ namespace AlwaysDay
 #endregion
 
 #region AlwaysDayToggle 
-        public void AlwaysDay1(CommandArgs args)
+        public void AlDay(CommandArgs args)
                      {
             if (args.Player != null)
             {
                 AlwaysDayToggle = !AlwaysDayToggle;
-                if (AlwaysDayToggle == true)
-                {
-                    
-                   
-                }
                 args.Player.SendInfoMessage("Always Day now: " + ((AlwaysDayToggle) ? "Enabled" : "Disabled"));
             }
                      }
